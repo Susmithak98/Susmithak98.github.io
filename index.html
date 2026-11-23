@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Susmitha Kotharu — Senior AI Engineer</title>
+<meta name="description" content="Susmitha Kotharu — Senior AI Engineer building production Generative AI, agentic AI, and RAG systems in healthcare and financial services." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #05060f;
+    --bg-2: #0a0c1d;
+    --panel: rgba(16, 19, 42, 0.55);
+    --border: rgba(140, 160, 255, 0.14);
+    --text: #e8ebff;
+    --muted: #9aa1c7;
+    --cyan: #22d3ee;
+    --violet: #a78bfa;
+    --pink: #f472b6;
+    --grad: linear-gradient(120deg, var(--cyan), var(--violet) 55%, var(--pink));
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --sans: "Space Grotesk", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: radial-gradient(1200px 800px at 75% 10%, #121638 0%, var(--bg) 60%) fixed;
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  #bg { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+  main, nav, footer { position: relative; z-index: 1; }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 6vw;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(5, 6, 15, 0.45);
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s;
+  }
+  nav.scrolled { border-bottom-color: var(--border); }
+  .logo { font-family: var(--mono); font-weight: 500; font-size: 15px; }
+  .logo span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--muted); }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  section { padding: 120px 6vw; max-width: 1240px; margin: 0 auto; }
+  .eyebrow { font-family: var(--mono); color: var(--cyan); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+  h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.1; margin-bottom: 40px; font-weight: 600; }
+
+  /* Hero */
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 140px; }
+  .hero-inner { max-width: 640px; }
+  .status { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 13px; color: var(--muted);
+    border: 1px solid var(--border); padding: 6px 14px; border-radius: 99px; background: var(--panel); margin-bottom: 28px; }
+  .status i { width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 10px #34d399; animation: blink 2s infinite; }
+  @keyframes blink { 50% { opacity: .35; } }
+  .hero h1 { font-size: clamp(44px, 7vw, 88px); line-height: 1; font-weight: 700; letter-spacing: -0.02em; }
+  .hero h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .typed { font-family: var(--mono); font-size: clamp(16px, 2vw, 21px); color: var(--muted); margin: 22px 0 18px; min-height: 1.6em; }
+  .typed b { color: var(--cyan); font-weight: 500; }
+  .typed .caret { display: inline-block; width: 9px; height: 1.1em; background: var(--cyan); vertical-align: -3px; margin-left: 3px; animation: blink 1s steps(1) infinite; }
+  .tagline { font-size: 18px; color: var(--muted); max-width: 540px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 12px; font-weight: 500; font-size: 15px; transition: transform .2s, box-shadow .2s, background .2s; }
+  .btn-primary { background: var(--grad); color: #07081a; box-shadow: 0 10px 40px -10px rgba(167,139,250,.7); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 50px -10px rgba(34,211,238,.7); }
+  .btn-ghost { border: 1px solid var(--border); background: var(--panel); backdrop-filter: blur(8px); }
+  .btn-ghost:hover { border-color: var(--violet); transform: translateY(-2px); }
+  .scroll-hint { position: absolute; bottom: 36px; left: 6vw; font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+  .scroll-hint::before { content: ""; width: 40px; height: 1px; background: var(--muted); }
+
+  /* Glass panel */
+  .glass { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: start; }
+  .about-text p { color: var(--muted); font-size: 17px; margin-bottom: 18px; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .stat { padding: 26px 22px; }
+  .stat .v { font-size: 38px; font-weight: 700; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.1; }
+  .stat .l { color: var(--muted); font-size: 14px; margin-top: 6px; }
+  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
+
+  /* Skills */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .skill-group { padding: 28px; }
+  .skill-group h3 { font-size: 17px; font-weight: 600; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+  .skill-group h3::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--grad); transform: rotate(45deg); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-family: var(--mono); font-size: 12.5px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,.03); color: #cdd2f5; transition: border-color .2s, color .2s; }
+  .chip:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* Projects */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
+  @media (max-width: 420px) { .projects-grid { grid-template-columns: 1fr; } }
+  .card-wrap { perspective: 1000px; }
+  .card {
+    position: relative; padding: 30px; height: 100%; display: flex; flex-direction: column;
+    transform-style: preserve-3d; transition: transform .15s ease-out, border-color .3s;
+    --mx: 50%; --my: 50%;
+  }
+  .card::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(400px circle at var(--mx) var(--my), rgba(167,139,250,.18), transparent 45%);
+  }
+  .card:hover { border-color: rgba(167,139,250,.45); }
+  .card:hover::after { opacity: 1; }
+  .card > * { transform: translateZ(30px); }
+  .card .badge { align-self: flex-start; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(34,211,238,.1); color: var(--cyan); margin-bottom: 18px; }
+  .card h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+  .card p { color: var(--muted); font-size: 15px; flex: 1; }
+  .card .metric { font-family: var(--mono); font-size: 13px; color: var(--violet); margin-top: 16px; }
+  .card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .card .tags span { font-family: var(--mono); font-size: 11.5px; color: #b9bfe6; padding: 3px 9px; border-radius: 6px; background: rgba(255,255,255,.05); }
+  .card .links { display: flex; gap: 18px; margin-top: 22px; font-size: 14px; font-weight: 500; }
+  .card .links a { color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: color .2s, border-color .2s; }
+  .card .links a:hover { color: var(--cyan); border-color: var(--cyan); }
+
+  /* Experience */
+  .timeline { position: relative; padding-left: 34px; }
+  .timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--cyan), var(--violet), transparent); }
+  .job { position: relative; padding: 26px 30px; margin-bottom: 22px; }
+  .job::before { content: ""; position: absolute; left: -34px; top: 32px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 2px solid var(--cyan); box-shadow: 0 0 14px var(--cyan); }
+  .job-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .job h3 { font-size: 19px; font-weight: 600; }
+  .job h3 span { color: var(--violet); font-weight: 500; }
+  .job .period { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .job ul { list-style: none; color: var(--muted); font-size: 15px; }
+  .job li { padding-left: 20px; position: relative; margin-bottom: 6px; }
+  .job li::before { content: "▹"; position: absolute; left: 0; color: var(--cyan); }
+
+  /* Contact */
+  .contact { text-align: center; padding: 70px 30px; }
+  .contact h2 { margin-bottom: 18px; }
+  .contact p { color: var(--muted); font-size: 18px; max-width: 520px; margin: 0 auto 34px; }
+  .contact .cta { justify-content: center; }
+  .socials { display: flex; justify-content: center; gap: 22px; margin-top: 34px; font-family: var(--mono); font-size: 14px; color: var(--muted); }
+  .socials a:hover { color: var(--cyan); }
+
+  footer { text-align: center; padding: 40px 6vw 50px; font-family: var(--mono); font-size: 12.5px; color: #5d6390; }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .card { transition: none; }
+  }
+  /* ---------- Talking anime avatar: large cutout on the right ---------- */
+  .buddy { position: fixed; right: 0; bottom: 0; height: min(76vh, 700px); z-index: 30; }
+  .avatar-btn { position: relative; height: 100%; aspect-ratio: 588 / 744; border: 0; background: none; padding: 0; cursor: pointer; display: block; color: var(--text); font: inherit; }
+  .avatar-btn::before { content: ""; position: absolute; inset: 8% 4% 0; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 40%, rgba(124,92,255,.38), rgba(34,211,238,.10) 45%, transparent 70%); filter: blur(10px); transition: opacity .4s; }
+  .cut { position: relative; height: 100%; animation: float 6s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-8px); } }
+  .cut img { position: relative; height: 100%; width: 100%; object-fit: contain; object-position: bottom;
+    filter: drop-shadow(0 0 1.5px rgba(34,211,238,.9)) drop-shadow(0 0 22px rgba(124,92,255,.55)); transition: filter .4s; }
+  .holo-scan { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; overflow: hidden;
+    -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: bottom; mask-position: bottom;
+    background: repeating-linear-gradient(0deg, rgba(34,211,238,.09) 0 2px, transparent 2px 5px); }
+  .holo-scan::after { content: ""; position: absolute; left: 0; right: 0; height: 18%; top: -20%;
+    background: linear-gradient(transparent, rgba(34,211,238,.30), transparent); animation: scan 5s ease-in-out infinite; }
+  @keyframes scan { 0% { top: -20%; } 55%, 100% { top: 105%; } }
+  .pad { position: absolute; left: 12%; right: 12%; bottom: 1.5%; height: 7%; border-radius: 50%;
+    border: 1.5px solid rgba(34,211,238,.7); box-shadow: 0 0 30px rgba(34,211,238,.5), inset 0 0 30px rgba(34,211,238,.35);
+    animation: pad 3s ease-in-out infinite; }
+  @keyframes pad { 50% { transform: scale(1.06); opacity: .6; } }
+  .talking .cut img { filter: drop-shadow(0 0 2px rgba(34,211,238,1)) drop-shadow(0 0 34px rgba(124,92,255,.85)); }
+  .talking::before { opacity: 1.4; }
+  .waving .cut { animation: hop .8s ease-in-out 2; }
+  @keyframes hop { 0%,100% { transform: translateY(0) rotate(0); } 30% { transform: translateY(-12px) rotate(-1.5deg); } 70% { transform: translateY(-4px) rotate(1.5deg); } }
+  .eq { position: absolute; left: 0; right: 0; bottom: 13%; display: flex; justify-content: center; align-items: center; gap: 4px; height: 30px; opacity: 0; transition: opacity .3s; }
+  .talking .eq { opacity: 1; }
+  .eq i { width: 4px; height: 100%; border-radius: 2px; background: var(--grad); transform: scaleY(.15); }
+  .talking .eq i { animation: eq .45s ease-in-out infinite alternate; }
+  .eq i:nth-child(2n) { animation-delay: -.15s !important; } .eq i:nth-child(3n) { animation-delay: -.3s !important; } .eq i:nth-child(5n) { animation-delay: -.22s !important; }
+  @keyframes eq { from { transform: scaleY(.15); } to { transform: scaleY(1); } }
+  .nameplate { position: absolute; left: 50%; bottom: 4.5%; transform: translateX(-50%); white-space: nowrap; font-family: var(--mono); font-size: 12px; color: var(--muted);
+    padding: 5px 12px; border: 1px solid var(--border); border-radius: 99px; background: rgba(10,12,29,.75); backdrop-filter: blur(8px); }
+  .nameplate b { color: #34d399; font-weight: 400; }
+
+  .bubble {
+    position: absolute; right: 80%; top: 6%; width: min(340px, 60vw); padding: 16px 18px 12px; z-index: 2;
+    background: rgba(14, 16, 38, 0.94); border: 1px solid rgba(167,139,250,.45); border-radius: 18px 4px 18px 18px;
+    box-shadow: 0 18px 50px -12px rgba(124, 92, 255, .55); backdrop-filter: blur(12px);
+    font-size: 14.5px; line-height: 1.5; color: var(--text);
+    transform-origin: top right; transition: opacity .3s, transform .3s;
+  }
+  .bubble.hidden { opacity: 0; transform: scale(.85); pointer-events: none; }
+  .bubble::after { content: ""; position: absolute; right: -9px; top: 16px; width: 16px; height: 16px; background: inherit;
+    border-right: 1px solid rgba(167,139,250,.45); border-top: 1px solid rgba(167,139,250,.45); transform: rotate(45deg); }
+  .bubble .who { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--cyan); margin-bottom: 4px; }
+  .bubble-text { min-height: 3em; }
+  .bubble-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .bubble-actions button, .bubble-close {
+    font: 500 12px var(--mono); color: var(--text); background: rgba(255,255,255,.06); border: 1px solid var(--border);
+    border-radius: 8px; padding: 5px 10px; cursor: pointer; transition: border-color .2s, color .2s;
+  }
+  .bubble-actions button:hover { border-color: var(--cyan); color: var(--cyan); }
+  .bubble-actions button.primary { background: var(--grad); color: #07081a; border-color: transparent; font-weight: 600; }
+  .bubble-actions button.primary:hover { color: #07081a; filter: brightness(1.1); }
+  .bubble-close { position: absolute; top: 8px; right: 8px; padding: 0 7px; line-height: 20px; border-radius: 6px; }
+
+  @media (min-width: 1000px) { main, footer { margin-right: min(46vh, 430px); } }
+  @media (max-width: 999px) {
+    .buddy { height: 230px; }
+    .eq, .nameplate { display: none; }
+    .bubble { top: auto; bottom: calc(100% - 20px); right: 12px; width: min(290px, 80vw); border-radius: 18px 18px 4px 18px; font-size: 13.5px; transform-origin: bottom right; }
+    .bubble::after { top: auto; bottom: -9px; right: 50px; transform: rotate(135deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .cut, .pad, .holo-scan::after, .talking .eq i, .waving .cut { animation: none; } }
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<nav id="nav">
+  <a href="#top" class="logo" id="logo"></a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<main id="top">
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <div class="status"><i></i><span id="status"></span></div>
+      <h1>Hi, I'm <span class="grad" id="name"></span></h1>
+      <div class="typed"><span>&gt; </span><b id="typed"></b><span class="caret"></span></div>
+      <p class="tagline" id="tagline"></p>
+      <div class="cta" id="hero-cta"></div>
+    </div>
+    <div class="scroll-hint">scroll to explore</div>
+  </section>
+
+  <section id="about">
+    <div class="eyebrow reveal">01 · About</div>
+    <h2 class="reveal">Turning models into<br/>products people use.</h2>
+    <div class="about-grid">
+      <div class="about-text reveal" id="about-text"></div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="eyebrow reveal">02 · Stack</div>
+    <h2 class="reveal">What I work with</h2>
+    <div class="skills-grid" id="skills-grid"></div>
+  </section>
+
+  <section id="projects">
+    <div class="eyebrow reveal">03 · Projects</div>
+    <h2 class="reveal">Selected work &amp; case studies</h2>
+    <div class="projects-grid" id="projects-grid"></div>
+  </section>
+
+  <section id="experience">
+    <div class="eyebrow reveal">04 · Experience</div>
+    <h2 class="reveal">Where I've built</h2>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <section id="contact">
+    <div class="glass contact reveal">
+      <div class="eyebrow">05 · Contact</div>
+      <h2>Let's build something intelligent.</h2>
+      <p id="contact-text"></p>
+      <div class="cta" id="contact-cta"></div>
+      <div class="socials" id="socials"></div>
+    </div>
+  </section>
+</main>
+
+<div class="buddy" id="buddy">
+  <div class="bubble hidden" id="bubble" role="status" aria-live="polite">
+    <button class="bubble-close" id="bubble-close" aria-label="Hide speech bubble">×</button>
+    <div class="who" id="bubble-who"></div>
+    <div class="bubble-text" id="bubble-text"></div>
+    <div class="bubble-actions">
+      <button id="tour-btn" class="primary">▶ Give me the tour</button>
+      <button id="voice-btn" aria-pressed="true">🔇 Mute</button>
+      <button id="next-btn">Next ›</button>
+    </div>
+  </div>
+  <button class="avatar-btn" id="avatar-btn" aria-label="Talk to Susmitha">
+    <div class="pad"></div>
+    <div class="cut">
+      <img id="avatar-photo" alt="Anime-style portrait of Susmitha Kotharu" />
+      <div class="holo-scan" id="holo-scan"></div>
+    </div>
+    <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="nameplate" id="nameplate"></div>
+  </button>
+</div>
+
+<footer id="footer"></footer>
+
+<script type="module">
+/* =====================================================================
+   ✏️  EDIT EVERYTHING HERE — this is the only part you need to change.
+   Leave a link as "" to hide it.
+   ===================================================================== */
+const PROFILE = {
+  name: "Susmitha Kotharu",
+  handle: "susmitha",                       // shown in the nav logo
+  status: "Senior AI Engineer · Open to new opportunities",
+  roles: ["Senior AI Engineer", "Agentic AI Architect", "RAG Specialist", "LLMOps Engineer"],
+  tagline: "11+ years building production Generative AI, agentic, and ML systems in healthcare and financial services, designed to be secure, measurable, and HIPAA-compliant.",
+  email: "susmithakotharu27@gmail.com",
+  github: "",                               // e.g. "https://github.com/yourname"
+  linkedin: "https://www.linkedin.com/in/susmitha-kotharu-615547179/",
+  twitter: "",
+  resume: "",                               // e.g. "resume.pdf" (upload it to the repo)
+
+  about: [
+    "I'm a <strong>Senior AI Engineer</strong> with 11+ years of experience, from data engineering and applied ML to today's <strong>Generative and Agentic AI</strong>. I build LLM systems that hold up in regulated environments like healthcare, pharmacy benefits, government, and financial services.",
+    "At Vatica Health I architected a <strong>GPT-4o pharmacy benefit assistant</strong> that 500+ pharmacists use every day. It cut lookup time by 60%, and its <strong>LangGraph, CrewAI, and MCP</strong> agents resolve 70% of multi-step requests without escalation.",
+    "I care about quality you can measure. I build <strong>hybrid-search RAG</strong> with reranking, add <strong>Ragas, TruLens, and LangSmith</strong> evaluation gates to every build, and run services at 99.9% uptime with full observability and zero critical findings in HIPAA reviews.",
+  ],
+
+  stats: [
+    { value: "11+", label: "years in data, ML & AI" },
+    { value: "500+", label: "pharmacists using my GenAI assistant daily" },
+    { value: "92%", label: "answer groundedness in production RAG" },
+    { value: "2M+", label: "healthcare records processed / day" },
+  ],
+
+  skills: {
+    "Generative AI & LLMs": ["GPT-4o", "Azure OpenAI", "Llama 3", "Mistral", "Amazon Bedrock", "Hugging Face", "Prompt Engineering", "ReAct", "Structured Outputs"],
+    "Agentic AI": ["LangGraph", "LangChain", "LlamaIndex", "CrewAI", "Model Context Protocol (MCP)", "Tool Calling", "Multi-Agent Systems"],
+    "RAG & Vector Search": ["Hybrid Search", "Cross-Encoder Reranking", "Azure AI Search", "pgvector", "Pinecone", "ChromaDB", "Embeddings"],
+    "Fine-Tuning & ML": ["LoRA / QLoRA", "PEFT", "scikit-learn", "XGBoost", "TensorFlow", "Anomaly Detection"],
+    "Evaluation & Observability": ["Ragas", "TruLens", "LangSmith", "Arize Phoenix", "Azure Monitor", "CloudWatch", "Drift Detection"],
+    "MLOps & Cloud": ["Azure ML", "AKS", "SageMaker", "EKS", "MLflow", "Docker", "Kubernetes", "Terraform", "CI/CD"],
+    "Data Engineering": ["Databricks", "PySpark", "Apache Kafka", "Airflow", "Snowflake", "FHIR · NCPDP · X12 EDI"],
+    "Engineering & Security": ["Python", "SQL", "FastAPI", "TypeScript", "React.js", "SSE Streaming", "HIPAA", "OAuth2 / RBAC", "AI Guardrails"],
+  },
+
+  projects: [
+    {
+      badge: "Vatica Health · GenAI",
+      title: "Pharmacy Benefit AI Assistant",
+      description: "Internal GenAI assistant on Azure OpenAI GPT-4o and FastAPI. It gives grounded, cited answers for every plan and formulary, streamed to a React interface over SSE.",
+      metric: "60% faster lookups (8 → 3 min) · 500+ users · 85% weekly adoption",
+      tags: ["GPT-4o", "Azure OpenAI", "FastAPI", "React", "SSE", "AKS"],
+      github: "", demo: "",
+    },
+    {
+      badge: "Agentic AI",
+      title: "Multi-Agent Coverage & Appeals",
+      description: "Stateful LangGraph agents with CrewAI task orchestration and MCP tool servers that call enterprise claims and formulary APIs to resolve multi-step coverage and appeals requests.",
+      metric: "70% of multi-step requests resolved with no human escalation",
+      tags: ["LangGraph", "CrewAI", "MCP", "Tool Calling", "ReAct"],
+      github: "", demo: "",
+    },
+    {
+      badge: "RAG",
+      title: "Hybrid-Search RAG Pipeline",
+      description: "Hybrid retrieval with plan-specific metadata filtering, cross-encoder reranking, and inline citations. Azure AI Search, pgvector, Pinecone, and ChromaDB were benchmarked on real pharmacist queries.",
+      metric: "92% groundedness · +35% precision · +25% top-5 recall",
+      tags: ["Azure AI Search", "pgvector", "Pinecone", "Reranking", "Ragas"],
+      github: "", demo: "",
+    },
+    {
+      badge: "LLMOps",
+      title: "Evaluation Gates & Cost Optimization",
+      description: "Ragas, TruLens, and LangSmith quality gates run in CI/CD on every merge. Model benchmarking, routing to smaller models, semantic caching, and LoRA/QLoRA fine-tuning keep costs down.",
+      metric: "90% of regressions caught pre-release · 30% lower inference cost",
+      tags: ["Ragas", "TruLens", "LangSmith", "LoRA/QLoRA", "Azure ML"],
+      github: "", demo: "",
+    },
+    {
+      badge: "State of Minnesota",
+      title: "Secure Caseworker RAG & Agents",
+      description: "RAG over 100K+ policy and case documents with document-level access control, citation-enforcing prompts, and guarded ReAct agents with tool-call limits and retries.",
+      metric: "45% less research time · hallucinations halved · 300+ caseworkers",
+      tags: ["LangChain", "LlamaIndex", "AWS", "EKS", "MLflow"],
+      github: "", demo: "",
+    },
+    {
+      badge: "Data Engineering",
+      title: "Healthcare Data Pipelines",
+      description: "Kafka, Databricks, and PySpark pipelines that validate and normalize FHIR, NCPDP, and X12 EDI data with full lineage. They feed prior-authorization analytics and AI retrieval.",
+      metric: "2M+ records/day · 45% fewer validation errors",
+      tags: ["Kafka", "Databricks", "PySpark", "FHIR", "ADLS Gen2"],
+      github: "", demo: "",
+    },
+  ],
+
+  experience: [
+    {
+      role: "Senior AI Engineer",
+      company: "Vatica Health",
+      period: "Aug 2024 — Present",
+      points: [
+        "Architected a GPT-4o pharmacy benefit assistant that cut lookup time by 60% for 500+ pharmacists.",
+        "Built LangGraph, CrewAI, and MCP agents that resolve 70% of multi-step requests without escalation.",
+        "Shortened release cycles from 2 weeks to 2 days. Services run at 99.9% uptime with sub-2s p95 latency on AKS.",
+        "Passed HIPAA security review with zero critical findings and led a 6-person team through 4 on-time quarterly releases.",
+      ],
+    },
+    {
+      role: "AI Engineer",
+      company: "State of Minnesota",
+      period: "Aug 2022 — Aug 2024",
+      points: [
+        "Built secure RAG over 100K+ documents, cutting caseworker research time by 45%.",
+        "Halved hallucinated answers with citation-enforcing prompts and cut failed agent runs by 60%.",
+        "Completed 30+ zero-downtime deployments on Amazon EKS and cut releases from 2 days to under 1 hour.",
+      ],
+    },
+    {
+      role: "Applied ML Engineer",
+      company: "FIS Global",
+      period: "May 2020 — Aug 2022",
+      points: [
+        "Lifted credit-risk model ROC-AUC by 8% with XGBoost and feature engineering.",
+        "Served 1M+ risk predictions per month at 99.9% availability and cut p95 latency by 45%.",
+        "Built drift detection that flags population shifts about 2 weeks before accuracy degrades.",
+      ],
+    },
+    {
+      role: "ML Engineer",
+      company: "Aveva",
+      period: "Feb 2019 — May 2020",
+      points: [
+        "Built reproducible ML pipelines and MLflow tracking for 100+ experiments.",
+        "Cut batch scoring runtime by 35% and inference compute cost by 20% on AWS.",
+      ],
+    },
+    {
+      role: "Data Engineer",
+      company: "Apollo Health",
+      period: "Jun 2015 — Aug 2018",
+      points: [
+        "Built ETL pipelines across SAP ERP, MES, and LIMS that cut regulatory reporting effort by 50%.",
+        "Supported GxP and GMP audits with zero data-integrity findings.",
+      ],
+    },
+  ],
+
+  avatar: {
+    name: "Susmitha",
+    photo: "avatar.png",                    // transparent cutout, upload next to index.html
+    voiceOnByDefault: true,                 // starts talking on the visitor's first click
+    nameplate: "Susmitha · Sr. AI Engineer",
+    // What the avatar says when each section scrolls into view. "Next" cycles through the lines.
+    // What she says in each section. The tour reads every line in order, scrolling as she goes.
+    lines: {
+      home: [
+        "Hi, I'm Susmitha! 👋 I'm a Senior AI Engineer, and I build Generative and Agentic AI systems that people rely on every day.",
+        "Press 'Give me the tour' and I'll walk you through my portfolio myself. Or just scroll, and I'll explain each part as you go!",
+      ],
+      about: [
+        "A little about me: I have more than 11 years of experience. I started in data engineering, moved into machine learning, and now I build large language model systems.",
+        "Most of my work is in healthcare and financial services, where AI has to be accurate, secure, and HIPAA-compliant.",
+        "My proudest build is a GPT-4o assistant that more than 500 pharmacists use every day. It cut their benefit lookups from 8 minutes to 3.",
+      ],
+      skills: [
+        "Here's my toolbox. For agents, I use LangGraph, CrewAI, and the Model Context Protocol, so AI can plan steps and call real business systems.",
+        "For retrieval, I build hybrid-search RAG with reranking on Azure AI Search, pgvector, and Pinecone, so answers are grounded and cited.",
+        "And I never ship without evaluation. Ragas, TruLens, and LangSmith test quality on every build, and I run everything on Azure and AWS with Docker, Kubernetes, and Terraform.",
+      ],
+      projects: [
+        "Now my projects. First, the Pharmacy Benefit AI Assistant: a GPT-4o app with cited answers and a streaming React interface. Pharmacists use it 60% faster, and 85% use it every week.",
+        "Next, my multi-agent coverage and appeals system. LangGraph and CrewAI agents call claims and formulary APIs, and resolve 70% of multi-step requests with no human escalation.",
+        "My hybrid-search RAG pipeline reached 92% groundedness and 35% better retrieval precision. My evaluation gates catch 90% of quality regressions before release, and smart routing cut inference cost by 30%.",
+        "For the State of Minnesota, I built secure RAG over 100,000 documents that cut caseworker research time by 45% and halved hallucinations. And my data pipelines process over 2 million healthcare records a day.",
+      ],
+      experience: [
+        "Here's my journey. I'm currently a Senior AI Engineer at Vatica Health, leading generative AI for pharmacy benefits. We passed our HIPAA review with zero critical findings.",
+        "Before that I was an AI Engineer at the State of Minnesota, an Applied ML Engineer at FIS Global, an ML Engineer at Aveva, and a Data Engineer at Apollo Health.",
+      ],
+      contact: [
+        "That's my story! If you need an AI engineer for agentic AI, RAG, or LLMOps, especially in healthcare, I'd love to talk. 💬",
+        "Click 'Say hello' to email me, or connect with me on LinkedIn. Thanks for visiting!",
+      ],
+    },
+  },
+
+  contactText: "I'm open to senior AI engineering roles and collaborations on agentic AI, RAG, and LLMOps, especially in healthcare and other regulated industries.",
+};
+/* ===================================================================== */
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ext = (href) => /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : "";
+
+// ---------- Render content ----------
+document.title = `${PROFILE.name} — ${PROFILE.roles[0]}`;
+$("logo").innerHTML = `<span>~/</span>${esc(PROFILE.handle)}`;
+$("status").textContent = PROFILE.status;
+$("name").textContent = PROFILE.name;
+$("tagline").textContent = PROFILE.tagline;
+
+const heroBtns = [`<a class="btn btn-primary" href="#projects">View my work →</a>`];
+if (PROFILE.resume) heroBtns.push(`<a class="btn btn-ghost" href="${esc(PROFILE.resume)}"${ext(PROFILE.resume)}>Résumé</a>`);
+if (PROFILE.github) heroBtns.push(`<a class="btn btn-ghost" href="${esc(PROFILE.github)}"${ext(PROFILE.github)}>GitHub</a>`);
+$("hero-cta").innerHTML = heroBtns.join("");
+
+$("about-text").innerHTML = PROFILE.about.map((p) => `<p>${p}</p>`).join(""); // HTML allowed for <strong>
+$("stats").innerHTML = PROFILE.stats.map((s) => `<div class="glass stat reveal"><div class="v">${esc(s.value)}</div><div class="l">${esc(s.label)}</div></div>`).join("");
+
+$("skills-grid").innerHTML = Object.entries(PROFILE.skills).map(([group, items]) =>
+  `<div class="glass skill-group reveal"><h3>${esc(group)}</h3><div class="chips">${items.map((i) => `<span class="chip">${esc(i)}</span>`).join("")}</div></div>`
+).join("");
+
+$("projects-grid").innerHTML = PROFILE.projects.map((p) => {
+  const links = [];
+  if (p.github) links.push(`<a href="${esc(p.github)}"${ext(p.github)}>Code ↗</a>`);
+  if (p.demo) links.push(`<a href="${esc(p.demo)}"${ext(p.demo)}>Live demo ↗</a>`);
+  return `<div class="card-wrap reveal"><article class="glass card">
+    ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ""}
+    <h3>${esc(p.title)}</h3>
+    <p>${esc(p.description)}</p>
+    ${p.metric ? `<div class="metric">${esc(p.metric)}</div>` : ""}
+    <div class="tags">${p.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div>
+    ${links.length ? `<div class="links">${links.join("")}</div>` : ""}
+  </article></div>`;
+}).join("");
+
+$("timeline").innerHTML = PROFILE.experience.map((j) =>
+  `<div class="glass job reveal"><div class="job-head"><h3>${esc(j.role)} <span>@ ${esc(j.company)}</span></h3><span class="period">${esc(j.period)}</span></div>
+   <ul>${j.points.map((pt) => `<li>${esc(pt)}</li>`).join("")}</ul></div>`
+).join("");
+
+$("contact-text").textContent = PROFILE.contactText;
+$("contact-cta").innerHTML = PROFILE.email ? `<a class="btn btn-primary" href="mailto:${esc(PROFILE.email)}">Say hello →</a>` : "";
+$("socials").innerHTML = [["GitHub", PROFILE.github], ["LinkedIn", PROFILE.linkedin], ["X / Twitter", PROFILE.twitter], ["Email", PROFILE.email && "mailto:" + PROFILE.email]]
+  .filter(([, h]) => h).map(([l, h]) => `<a href="${esc(h)}"${ext(h)}>${l}</a>`).join("");
+$("footer").textContent = `© ${new Date().getFullYear()} ${PROFILE.name} · Built with Three.js · Hosted on GitHub Pages`;
+
+// ---------- Interactions ----------
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Typing effect
+(function typer() {
+  const el = $("typed");
+  if (reduceMotion) { el.textContent = PROFILE.roles[0]; return; }
+  let r = 0, i = 0, deleting = false;
+  (function tick() {
+    const word = PROFILE.roles[r];
+    el.textContent = word.slice(0, i);
+    if (!deleting && i === word.length) { deleting = true; return setTimeout(tick, 1800); }
+    if (deleting && i === 0) { deleting = false; r = (r + 1) % PROFILE.roles.length; }
+    i += deleting ? -1 : 1;
+    setTimeout(tick, deleting ? 35 : 70);
+  })();
+})();
+
+// Nav border on scroll
+addEventListener("scroll", () => $("nav").classList.toggle("scrolled", scrollY > 20), { passive: true });
+
+// Reveal on scroll
+const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
+document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+// 3D tilt on project cards
+if (!reduceMotion && matchMedia("(hover: hover)").matches) {
+  document.querySelectorAll(".card").forEach((card) => {
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      card.style.transform = `rotateX(${(0.5 - y) * 12}deg) rotateY(${(x - 0.5) * 14}deg)`;
+      card.style.setProperty("--mx", `${x * 100}%`);
+      card.style.setProperty("--my", `${y * 100}%`);
+    });
+    card.addEventListener("pointerleave", () => { card.style.transform = ""; });
+  });
+}
+
+// ---------- Talking anime avatar ----------
+(function avatar() {
+  const A = PROFILE.avatar; if (!A) return;
+  const btn = $("avatar-btn"), bubble = $("bubble"), textEl = $("bubble-text"), voiceBtn = $("voice-btn"), tourBtn = $("tour-btn");
+  const order = Object.keys(A.lines);
+  $("bubble-who").textContent = A.name;
+  $("nameplate").innerHTML = `<b>●</b> ${esc(A.nameplate || A.name)}`;
+  const photo = $("avatar-photo");
+  photo.src = A.photo;
+  const scan = $("holo-scan");
+  scan.style.webkitMaskImage = scan.style.maskImage = `url("${A.photo}")`;
+  photo.onerror = () => { $("buddy").style.display = "none"; };
+
+  const synth = "speechSynthesis" in window ? window.speechSynthesis : null;
+  let voiceOn = !!(synth && A.voiceOnByDefault), unlocked = false, voice = null;
+  let section = "home", idx = 0, said = new Set(), touring = false, run = 0, hideTimer = null, waveTimer = null, current = "";
+  const setVoiceBtn = () => { voiceBtn.textContent = voiceOn ? "🔇 Mute" : "🔊 Hear me"; voiceBtn.setAttribute("aria-pressed", voiceOn); };
+  if (!synth) voiceBtn.style.display = "none"; setVoiceBtn();
+
+  const pickVoice = () => {
+    if (!synth) return;
+    const vs = synth.getVoices().filter((v) => /^en/i.test(v.lang));
+    voice = vs.find((v) => /aria|jenny|samantha|zira|female|google us english|victoria|karen|moira|tessa|natural/i.test(v.name)) || vs[0] || null;
+  };
+  if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const wave = (ms = 1800) => { if (reduceMotion) return; btn.classList.add("waving"); clearTimeout(waveTimer); waveTimer = setTimeout(() => btn.classList.remove("waving"), ms); };
+
+  // Say one line: types it out and (if voice is on) speaks it. Resolves when finished.
+  function say(text) {
+    const my = ++run; current = text;
+    bubble.classList.remove("hidden"); clearTimeout(hideTimer);
+    if (synth) synth.cancel();
+    btn.classList.add("talking");
+    textEl.textContent = "";
+    const typing = new Promise(async (res) => {
+      for (let i = 1; i <= text.length; i++) {
+        if (my !== run) return res();
+        textEl.textContent = text.slice(0, i);
+        if (!reduceMotion) await sleep(24);
+      }
+      res();
+    });
+    const speaking = new Promise((res) => {
+      if (!(voiceOn && unlocked && synth)) {
+        // no audio: give readers time proportional to the length of the line
+        return setTimeout(res, Math.max(2200, text.split(/\s+/).length * 330));
+      }
+      const u = new SpeechSynthesisUtterance(text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, ""));
+      if (voice) u.voice = voice;
+      u.pitch = 1.1; u.rate = 1.0;
+      u.onend = u.onerror = () => res();
+      synth.speak(u);
+    });
+    return Promise.all([typing, speaking]).then(() => {
+      if (my !== run) return;
+      btn.classList.remove("talking");
+      if (!touring && innerWidth < 1000) hideTimer = setTimeout(() => bubble.classList.add("hidden"), 7000);
+    });
+  }
+  const stop = () => { run++; if (synth) synth.cancel(); btn.classList.remove("talking"); };
+
+  // Guided tour: scroll to each section and explain it, line by line
+  async function tour() {
+    if (touring) { endTour(); return; }
+    touring = true; tourBtn.textContent = "■ Stop tour"; wave(2400);
+    const myRun = Symbol(); tour.active = myRun;
+    for (const sec of order) {
+      if (tour.active !== myRun) return;
+      const el = $(sec); if (el) el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      section = sec; said.add(sec);
+      await sleep(900);
+      for (let i = 0; i < A.lines[sec].length; i++) {
+        if (tour.active !== myRun) return;
+        idx = i; await say(A.lines[sec][i]); await sleep(450);
+      }
+    }
+    if (tour.active === myRun) { wave(2400); endTour(); }
+  }
+  function endTour() { touring = false; tour.active = null; tourBtn.textContent = "▶ Give me the tour"; }
+
+  const lineFor = (sec, i) => { const l = A.lines[sec] || A.lines.home; return l[i % l.length]; };
+  const next = () => { if (touring) endTour(); idx++; say(lineFor(section, idx)); };
+
+  tourBtn.addEventListener("click", (e) => { e.stopPropagation(); unlocked = true; tour(); });
+  btn.addEventListener("click", () => { unlocked = true; wave(); if (touring) return; bubble.classList.contains("hidden") ? say(lineFor(section, idx)) : next(); });
+  $("next-btn").addEventListener("click", () => { unlocked = true; next(); });
+  $("bubble-close").addEventListener("click", () => { endTour(); stop(); bubble.classList.add("hidden"); });
+  voiceBtn.addEventListener("click", () => {
+    unlocked = true; voiceOn = !voiceOn; setVoiceBtn();
+    if (voiceOn) say(current || lineFor(section, idx)); else if (synth) synth.cancel();
+  });
+
+  // Browsers only allow speech after the visitor interacts. On the first click or key press, say the current line out loud.
+  const unlock = (e) => {
+    if (unlocked) return; unlocked = true;
+    if (e && e.target && e.target.closest && e.target.closest(".bubble-actions, .avatar-btn")) return; // those buttons handle themselves
+    if (voiceOn && current && !touring) say(current);
+  };
+  addEventListener("pointerdown", unlock, { once: true, capture: true });
+  addEventListener("keydown", unlock, { once: true, capture: true });
+
+  // When the visitor scrolls on their own, explain the section they land on
+  const secObs = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (touring || !e.isIntersecting || e.target.id === section) return;
+      section = e.target.id; idx = 0;
+      if (section === "contact") wave(2400);
+      if (!said.has(section) && !bubble.classList.contains("hidden")) { said.add(section); say(lineFor(section, 0)); }
+    });
+  }, { threshold: 0.45 });
+  order.forEach((id) => { const el = $(id); if (el) secObs.observe(el); });
+
+  setTimeout(() => { said.add("home"); wave(2400); say(lineFor("home", 0)).then(() => { if (!touring && section === "home" && idx === 0) { idx = 1; say(lineFor("home", 1)); } }); }, 1200);
+})();
+
+// ---------- 3D neural network scene ----------
+try {
+  const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js");
+  const canvas = $("bg");
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight);
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x05060f, 0.045);
+  const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 100);
+  camera.position.z = 7;
+
+  // Soft glow sprite texture
+  const glow = (() => {
+    const c = document.createElement("canvas"); c.width = c.height = 64;
+    const g = c.getContext("2d");
+    const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grd.addColorStop(0, "rgba(255,255,255,1)");
+    grd.addColorStop(0.25, "rgba(255,255,255,.8)");
+    grd.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+  })();
+
+  const cyan = new THREE.Color(0x22d3ee), violet = new THREE.Color(0xa78bfa), pink = new THREE.Color(0xf472b6);
+  const additive = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlending };
+
+  const root = new THREE.Group();   // follows scroll/layout
+  const tilt = new THREE.Group();   // follows mouse
+  const brain = new THREE.Group();  // auto-rotates
+  scene.add(root); root.add(tilt); tilt.add(brain);
+
+  // Nodes on a fibonacci sphere
+  const N = 340, R = 2.3, nodes = [];
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < N; i++) {
+    const y = 1 - (i / (N - 1)) * 2, rr = Math.sqrt(1 - y * y), th = golden * i;
+    const j = 1 + (Math.random() - 0.5) * 0.12;
+    nodes.push(new THREE.Vector3(Math.cos(th) * rr * R * j, y * R * j, Math.sin(th) * rr * R * j));
+  }
+  const colorAt = (v) => { const t = (v.y / R + 1) / 2; return t < 0.5 ? cyan.clone().lerp(violet, t * 2) : violet.clone().lerp(pink, (t - 0.5) * 2); };
+
+  const nPos = new Float32Array(N * 3), nCol = new Float32Array(N * 3);
+  nodes.forEach((v, i) => { v.toArray(nPos, i * 3); colorAt(v).toArray(nCol, i * 3); });
+  const nodeGeo = new THREE.BufferGeometry();
+  nodeGeo.setAttribute("position", new THREE.BufferAttribute(nPos, 3));
+  nodeGeo.setAttribute("color", new THREE.BufferAttribute(nCol, 3));
+  brain.add(new THREE.Points(nodeGeo, new THREE.PointsMaterial({ size: 0.11, map: glow, vertexColors: true, ...additive })));
+
+  // Synapses: connect nearby nodes
+  const edges = [], ePos = [], eCol = [];
+  for (let a = 0; a < N; a++) for (let b = a + 1; b < N; b++) {
+    if (nodes[a].distanceTo(nodes[b]) < 0.62) {
+      edges.push([a, b]);
+      ePos.push(...nodes[a].toArray(), ...nodes[b].toArray());
+      eCol.push(...colorAt(nodes[a]).toArray(), ...colorAt(nodes[b]).toArray());
+    }
+  }
+  const edgeGeo = new THREE.BufferGeometry();
+  edgeGeo.setAttribute("position", new THREE.Float32BufferAttribute(ePos, 3));
+  edgeGeo.setAttribute("color", new THREE.Float32BufferAttribute(eCol, 3));
+  brain.add(new THREE.LineSegments(edgeGeo, new THREE.LineBasicMaterial({ vertexColors: true, opacity: 0.32, ...additive })));
+
+  // Core: wireframe icosahedron + glow
+  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.05, 1), new THREE.MeshBasicMaterial({ color: 0xa78bfa, wireframe: true, transparent: true, opacity: 0.22 }));
+  brain.add(core);
+  const coreGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: 0x22d3ee, opacity: 0.35, ...additive }));
+  coreGlow.scale.setScalar(3.2);
+  brain.add(coreGlow);
+
+  // Orbit rings
+  const rings = [0x22d3ee, 0xa78bfa].map((c, k) => {
+    const m = new THREE.Mesh(new THREE.TorusGeometry(3.1 + k * 0.35, 0.007, 8, 240), new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0.35 }));
+    m.rotation.set(Math.PI / 2 + (k ? 0.5 : -0.35), k ? 0.3 : -0.2, 0);
+    tilt.add(m); return m;
+  });
+
+  // Signal pulses travelling along synapses
+  const P = 40, pulses = [];
+  const pPos = new Float32Array(P * 3);
+  for (let i = 0; i < P; i++) pulses.push({ e: edges[(Math.random() * edges.length) | 0], t: Math.random(), s: 0.6 + Math.random() * 1.2 });
+  const pulseGeo = new THREE.BufferGeometry();
+  pulseGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
+  brain.add(new THREE.Points(pulseGeo, new THREE.PointsMaterial({ size: 0.2, map: glow, color: 0xffffff, ...additive })));
+
+  // Starfield
+  const S = 1800, sPos = new Float32Array(S * 3);
+  for (let i = 0; i < S * 3; i++) sPos[i] = (Math.random() - 0.5) * 60;
+  const starGeo = new THREE.BufferGeometry();
+  starGeo.setAttribute("position", new THREE.BufferAttribute(sPos, 3));
+  const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ size: 0.06, map: glow, color: 0x9fb4ff, opacity: 0.7, ...additive }));
+  scene.add(stars);
+
+  // Input
+  const mouse = { x: 0, y: 0 }, target = { x: 0, y: 0 };
+  addEventListener("pointermove", (e) => { target.x = e.clientX / innerWidth - 0.5; target.y = e.clientY / innerHeight - 0.5; }, { passive: true });
+
+  const layout = () => {
+    const wide = innerWidth > 900;
+    return { x: wide ? 3.3 : 0, y: wide ? 0.3 : -0.6, s: wide ? 0.9 : 0.75 };
+  };
+  addEventListener("resize", () => {
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+
+  const clock = new THREE.Clock();
+  const a = new THREE.Vector3(), b = new THREE.Vector3();
+  (function frame() {
+    const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
+    const speed = reduceMotion ? 0.15 : 1;
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    const p = scrollY / maxScroll;
+    const L = layout();
+
+    // Scroll choreography: drift from right to left and recede
+    root.position.x += ((L.x - p * L.x * 0.6) - root.position.x) * 0.06;
+    root.position.y += ((L.y + Math.sin(p * Math.PI) * 0.4) - root.position.y) * 0.06;
+    root.scale.setScalar(L.s * (1 - p * 0.25));
+    camera.position.z += ((7 + p * 3) - camera.position.z) * 0.06;
+
+    mouse.x += (target.x - mouse.x) * 0.05; mouse.y += (target.y - mouse.y) * 0.05;
+    tilt.rotation.y = mouse.x * 0.6; tilt.rotation.x = mouse.y * 0.4;
+
+    brain.rotation.y += dt * 0.12 * speed * (1 + p * 2);
+    brain.rotation.x = Math.sin(t * 0.2) * 0.15;
+    core.rotation.x -= dt * 0.3 * speed; core.rotation.z += dt * 0.2 * speed;
+    coreGlow.material.opacity = 0.28 + Math.sin(t * 1.6) * 0.08;
+    rings[0].rotation.z += dt * 0.15 * speed; rings[1].rotation.z -= dt * 0.1 * speed;
+    stars.rotation.y += dt * 0.008 * speed; stars.rotation.x = p * 0.5;
+
+    pulses.forEach((pl, i) => {
+      pl.t += dt * pl.s * speed;
+      if (pl.t > 1) { pl.t = 0; pl.e = edges[(Math.random() * edges.length) | 0]; }
+      a.copy(nodes[pl.e[0]]); b.copy(nodes[pl.e[1]]);
+      a.lerp(b, pl.t).toArray(pPos, i * 3);
+    });
+    pulseGeo.attributes.position.needsUpdate = true;
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  })();
+} catch (err) {
+  console.warn("3D background unavailable:", err);
+}
+</script>
+</body>
+</html>
