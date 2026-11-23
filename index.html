@@ -209,6 +209,7 @@
     border-radius: 8px; padding: 5px 10px; cursor: pointer; transition: border-color .2s, color .2s;
   }
   .bubble-actions button:hover { border-color: var(--cyan); color: var(--cyan); }
+  .bubble-actions button.on { border-color: #34d399; color: #34d399; }
   .bubble-actions button.primary { background: var(--grad); color: #07081a; border-color: transparent; font-weight: 600; }
   .bubble-actions button.primary:hover { color: #07081a; filter: brightness(1.1); }
   .bubble-close { position: absolute; top: 8px; right: 8px; padding: 0 7px; line-height: 20px; border-radius: 6px; }
@@ -294,7 +295,7 @@
     <div class="bubble-text" id="bubble-text"></div>
     <div class="bubble-actions">
       <button id="tour-btn" class="primary">▶ Give me the tour</button>
-      <button id="voice-btn" aria-pressed="true">🔇 Mute</button>
+      <button id="voice-btn" aria-pressed="true">🔊 Voice: ON</button>
       <button id="next-btn">Next ›</button>
     </div>
   </div>
@@ -601,7 +602,7 @@ if (!reduceMotion && matchMedia("(hover: hover)").matches) {
   const synth = "speechSynthesis" in window ? window.speechSynthesis : null;
   let voiceOn = !!(synth && A.voiceOnByDefault), unlocked = false, voice = null;
   let section = "home", idx = 0, said = new Set(), touring = false, run = 0, hideTimer = null, waveTimer = null, current = "";
-  const setVoiceBtn = () => { voiceBtn.textContent = voiceOn ? "🔇 Mute" : "🔊 Hear me"; voiceBtn.setAttribute("aria-pressed", voiceOn); };
+  const setVoiceBtn = () => { voiceBtn.textContent = voiceOn ? "🔊 Voice: ON" : "🔈 Voice: OFF"; voiceBtn.classList.toggle("on", voiceOn); voiceBtn.setAttribute("aria-pressed", voiceOn); };
   if (!synth) voiceBtn.style.display = "none"; setVoiceBtn();
 
   const pickVoice = () => {
@@ -634,11 +635,22 @@ if (!reduceMotion && matchMedia("(hover: hover)").matches) {
         // no audio: give readers time proportional to the length of the line
         return setTimeout(res, Math.max(2200, text.split(/\s+/).length * 330));
       }
-      const u = new SpeechSynthesisUtterance(text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, ""));
-      if (voice) u.voice = voice;
-      u.pitch = 1.1; u.rate = 1.0;
-      u.onend = u.onerror = () => res();
-      synth.speak(u);
+      // Chrome drops speech queued right after cancel() and can cut off long utterances,
+      // so wait a moment and speak sentence by sentence, keeping references alive.
+      const parts = text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, "").match(/[^.!?]+[.!?]*/g) || [text];
+      setTimeout(() => {
+        if (my !== run) return res();
+        window.__utterances = parts.map((p, k) => {
+          const u = new SpeechSynthesisUtterance(p.trim());
+          if (voice) { u.voice = voice; u.lang = voice.lang; }
+          u.pitch = 1.1; u.rate = 1.0;
+          if (k === parts.length - 1) u.onend = () => res();
+          u.onerror = (e) => { if (e.error !== "interrupted" && e.error !== "canceled") console.warn("speech error", e.error); if (k === parts.length - 1) res(); };
+          return u;
+        });
+        synth.resume();
+        window.__utterances.forEach((u) => synth.speak(u));
+      }, 120);
     });
     return Promise.all([typing, speaking]).then(() => {
       if (my !== run) return;
