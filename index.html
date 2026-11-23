@@ -233,6 +233,7 @@
     <a href="#about">About</a>
     <a href="#skills">Skills</a>
     <a href="#projects">Projects</a>
+    <a href="#labs">Demos</a>
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
   </div>
@@ -271,15 +272,21 @@
     <div class="projects-grid" id="projects-grid"></div>
   </section>
 
+  <section id="labs">
+    <div class="eyebrow reveal">04 · Live demos</div>
+    <h2 class="reveal">Try my projects</h2>
+    <div class="projects-grid" id="labs-grid"></div>
+  </section>
+
   <section id="experience">
-    <div class="eyebrow reveal">04 · Experience</div>
+    <div class="eyebrow reveal">05 · Experience</div>
     <h2 class="reveal">Where I've built</h2>
     <div class="timeline" id="timeline"></div>
   </section>
 
   <section id="contact">
     <div class="glass contact reveal">
-      <div class="eyebrow">05 · Contact</div>
+      <div class="eyebrow">06 · Contact</div>
       <h2>Let's build something intelligent.</h2>
       <p id="contact-text"></p>
       <div class="cta" id="contact-cta"></div>
@@ -404,6 +411,32 @@ const PROFILE = {
     },
   ],
 
+  labs: [
+    {
+      badge: "Live · Agentic AI",
+      title: "Travel Booking Multi-Agent",
+      description: "A LangGraph planner agent books a flight, hotel and cab through MCP tools, then a FastAPI confirmation agent confirms the trip. Watch every tool call live.",
+      tags: ["LangGraph", "MCP", "FastAPI", "asyncio"],
+      demo: "https://susmithak98.github.io/Travel_booking_system/",
+      repo: "https://github.com/Susmithak98/Travel_booking_system",
+    },
+    {
+      badge: "Live · Empathetic AI",
+      title: "Aira — AI Voice Companion",
+      description: "An offline voice companion with emotion detection, memory, mood tracking, crisis safety and wellness agents. It understands Indian family life and NRI struggles.",
+      tags: ["Whisper", "Ollama", "phi3:mini", "Multi-agent"],
+      demo: "https://susmithak98.github.io/ai-companion/",
+      repo: "https://github.com/Susmithak98/ai-companion",
+    },
+    {
+      badge: "Live · DevOps",
+      title: "CI/CD Pipeline for a Python Service",
+      description: "Lint, test, Docker build, push to GHCR, zero-downtime Kubernetes rollout and health checks, with automatic rollback. Break a test and see the pipeline stop it.",
+      tags: ["GitHub Actions", "Docker", "Kubernetes", "pytest"],
+      demo: "devops-project.html",
+    },
+  ],
+
   experience: [
     {
       role: "Senior AI Engineer",
@@ -484,6 +517,10 @@ const PROFILE = {
         "My hybrid-search RAG pipeline reached 92% groundedness and 35% better retrieval precision. My evaluation gates catch 90% of quality regressions before release, and smart routing cut inference cost by 30%.",
         "For the State of Minnesota, I built secure RAG over 100,000 documents that cut caseworker research time by 45% and halved hallucinations. And my data pipelines process over 2 million healthcare records a day.",
       ],
+      labs: [
+        "Want to see my work in action? These three demos are live, so you can try them right now.",
+        "My travel booking system uses LangGraph agents and MCP tools. Aira is my empathetic voice companion. And my CI/CD pipeline shows how I ship code safely with Docker and Kubernetes.",
+      ],
       experience: [
         "Here's my journey. I'm currently a Senior AI Engineer at Vatica Health, leading generative AI for pharmacy benefits. We passed our HIPAA review with zero critical findings.",
         "Before that I was an AI Engineer at the State of Minnesota, an Applied ML Engineer at FIS Global, an ML Engineer at Aveva, and a Data Engineer at Apollo Health.",
@@ -535,6 +572,14 @@ $("projects-grid").innerHTML = PROFILE.projects.map((p) => {
     ${links.length ? `<div class="links">${links.join("")}</div>` : ""}
   </article></div>`;
 }).join("");
+
+$("labs-grid").innerHTML = (PROFILE.labs || []).map((p) => `<div class="card-wrap reveal"><article class="glass card">
+    <span class="badge">${esc(p.badge)}</span>
+    <h3>${esc(p.title)}</h3>
+    <p>${esc(p.description)}</p>
+    <div class="tags">${p.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div>
+    <div class="links"><a href="${esc(p.demo)}">▶ Open live demo</a>${p.repo ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener">Code ↗</a>` : ""}</div>
+  </article></div>`).join("");
 
 $("timeline").innerHTML = PROFILE.experience.map((j) =>
   `<div class="glass job reveal"><div class="job-head"><h3>${esc(j.role)} <span>@ ${esc(j.company)}</span></h3><span class="period">${esc(j.period)}</span></div>

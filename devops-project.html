@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DevOps Project · CI/CD Pipeline Live Demo · Susmitha Kotharu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg:#05060f; --panel:rgba(16,19,42,.6); --border:rgba(140,160,255,.15); --text:#e8ebff; --muted:#9aa1c7;
+    --cyan:#22d3ee; --violet:#a78bfa; --pink:#f472b6; --green:#34d399; --amber:#fbbf24; --red:#f87171;
+    --grad:linear-gradient(120deg,var(--cyan),var(--violet) 55%,var(--pink)); --mono:"JetBrains Mono",monospace; --sans:"Space Grotesk",system-ui,sans-serif; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:radial-gradient(1000px 700px at 80% 0%,#2a1630 0%,var(--bg) 60%) fixed; color:var(--text); font-family:var(--sans); min-height:100vh; }
+  a { color:inherit; text-decoration:none; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:18px 5vw; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:5; background:rgba(5,6,15,.6); backdrop-filter:blur(10px); }
+  .back { font-family:var(--mono); font-size:13px; color:var(--muted); } .back:hover { color:var(--cyan); }
+  .tag { font-family:var(--mono); font-size:12px; padding:5px 12px; border:1px solid var(--border); border-radius:99px; color:var(--green); }
+  .wrap { max-width:1240px; margin:0 auto; padding:36px 5vw 60px; }
+  h1 { font-size:clamp(32px,4.5vw,52px); line-height:1.05; } h1 span { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .lead { color:var(--muted); max-width:780px; margin:14px 0 8px; font-size:17px; line-height:1.6; }
+  .note { font-family:var(--mono); font-size:12px; color:var(--amber); margin-bottom:26px; }
+  .glass { background:var(--panel); border:1px solid var(--border); border-radius:18px; backdrop-filter:blur(14px); }
+  .card { padding:20px 22px; }
+  .card h3 { font-size:13px; font-family:var(--mono); color:var(--cyan); letter-spacing:.08em; text-transform:uppercase; margin-bottom:14px; }
+  .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+  .btn { font:inherit; font-weight:600; cursor:pointer; border:0; border-radius:12px; padding:12px 20px; background:var(--grad); color:#07081a; }
+  .btn:disabled { opacity:.5; cursor:wait; }
+  .toggle { display:flex; align-items:center; gap:8px; font-size:14px; color:var(--muted); cursor:pointer; user-select:none; }
+  .toggle input { accent-color:var(--red); width:16px; height:16px; }
+  .meta { margin-left:auto; font-family:var(--mono); font-size:12.5px; color:var(--muted); }
+  .stages { display:grid; grid-template-columns:repeat(7,1fr); gap:10px; margin-top:20px; }
+  @media (max-width:980px) { .stages { grid-template-columns:repeat(4,1fr); } } @media (max-width:560px) { .stages { grid-template-columns:repeat(2,1fr); } }
+  .stage { padding:14px 12px; border-radius:14px; border:1px solid var(--border); background:rgba(255,255,255,.03); text-align:center; transition:.3s; position:relative; }
+  .stage .ic { font-size:22px; } .stage b { display:block; font-size:14px; margin-top:6px; } .stage small { font-family:var(--mono); font-size:11px; color:var(--muted); }
+  .stage .st { display:block; margin-top:8px; font-family:var(--mono); font-size:11px; color:var(--muted); }
+  .stage.run { border-color:var(--cyan); box-shadow:0 0 22px rgba(34,211,238,.35); } .stage.run .st { color:var(--cyan); }
+  .stage.ok { border-color:rgba(52,211,153,.6); } .stage.ok .st { color:var(--green); }
+  .stage.fail { border-color:rgba(248,113,113,.7); box-shadow:0 0 22px rgba(248,113,113,.3); } .stage.fail .st { color:var(--red); }
+  .stage.skip { opacity:.45; }
+  .main { display:grid; grid-template-columns:1.4fr 1fr; gap:22px; margin-top:22px; }
+  @media (max-width:900px) { .main { grid-template-columns:1fr; } }
+  .term { font-family:var(--mono); font-size:12.5px; line-height:1.6; background:#070815; border:1px solid var(--border); border-radius:12px; padding:14px; height:440px; overflow-y:auto; white-space:pre-wrap; color:#c7cdf3; }
+  .term .c { color:#6b7299; } .term .g { color:var(--green); } .term .r { color:var(--red); } .term .y { color:var(--amber); } .term .h { color:var(--cyan); } .term .v { color:var(--violet); }
+  .app { border-radius:12px; border:1px solid var(--border); overflow:hidden; }
+  .app .bar { display:flex; gap:6px; align-items:center; padding:9px 12px; background:#0c0e22; font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .app .bar i { width:10px; height:10px; border-radius:50%; background:#3a3f6b; display:inline-block; }
+  .app .body { padding:22px; min-height:150px; background:#070815; font-family:var(--mono); font-size:14px; }
+  .pods { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+  .pod { font-family:var(--mono); font-size:11.5px; padding:6px 10px; border-radius:8px; border:1px solid var(--border); color:var(--muted); transition:.3s; }
+  .pod.up { border-color:rgba(52,211,153,.6); color:var(--green); } .pod.new { border-color:var(--cyan); color:var(--cyan); }
+  .hist { list-style:none; font-family:var(--mono); font-size:12.5px; margin-top:10px; } .hist li { padding:6px 0; border-bottom:1px dashed var(--border); color:var(--muted); } .hist .g { color:var(--green); } .hist .r { color:var(--red); }
+  .about { margin-top:30px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; }
+  .about p, .about li { color:var(--muted); font-size:14.5px; line-height:1.6; } .about ul { padding-left:18px; }
+  .stack { display:flex; flex-wrap:wrap; gap:6px; } .stack span { font-family:var(--mono); font-size:12px; padding:4px 9px; border-radius:7px; background:rgba(255,255,255,.05); color:#c9cff5; }
+  pre.code { font-family:var(--mono); font-size:12px; line-height:1.55; background:#070815; border:1px solid var(--border); border-radius:12px; padding:14px; overflow-x:auto; color:#c7cdf3; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="https://susmithak98.github.io/">← Susmitha Kotharu · Portfolio</a>
+  <span class="tag">● Live demo · DevOps_Project</span>
+</header>
+<div class="wrap">
+  <h1>DevOps Project — <span>CI/CD Pipeline</span></h1>
+  <p class="lead">A complete delivery pipeline for a small Python service. Every push is linted, unit-tested, packaged into a Docker image, pushed to a registry, rolled out to Kubernetes with zero downtime, and health-checked, with automatic rollback if anything fails.</p>
+  <p class="note">⚡ This simulator mirrors the repo's GitHub Actions workflow (.github/workflows/ci.yml). Turn on “Break a test” to see a failing build stop before it reaches production.</p>
+
+  <section class="glass card">
+    <div class="controls">
+      <button class="btn" id="run">▶ Run pipeline</button>
+      <label class="toggle"><input type="checkbox" id="break" /> Break a test</label>
+      <label class="toggle"><input type="checkbox" id="badDeploy" /> Fail health check</label>
+      <span class="meta" id="meta">main · commit —</span>
+    </div>
+    <div class="stages" id="stages"></div>
+  </section>
+
+  <div class="main">
+    <section class="glass card">
+      <h3>Pipeline logs</h3>
+      <div class="term" id="term"><span class="c"># Press “Run pipeline” to trigger a build on push to main…</span></div>
+    </section>
+    <section class="glass card">
+      <h3>Production · hello-devops</h3>
+      <div class="app"><div class="bar"><i></i><i></i><i></i>&nbsp; https://hello-devops.example/</div>
+        <div class="body" id="app"><span style="color:var(--muted)">No deployment yet.</span></div></div>
+      <div class="pods" id="pods"></div>
+      <h3 style="margin-top:20px">Deployment history</h3>
+      <ul class="hist" id="hist"><li>—</li></ul>
+    </section>
+  </div>
+
+  <div class="about">
+    <div class="glass card"><h3>What's in the repo</h3><ul>
+      <li><code>app.py</code>: a FastAPI service with <code>/</code>, <code>/add</code> and <code>/health</code></li>
+      <li><code>tests/test_app.py</code>: pytest unit tests</li>
+      <li><code>Dockerfile</code>: a slim, non-root Python image</li>
+      <li><code>k8s/deployment.yaml</code>: 3 replicas, rolling updates and probes</li>
+      <li><code>.github/workflows/ci.yml</code>: lint → test → build → push → deploy</li></ul></div>
+    <div class="glass card"><h3>Tech stack</h3><div class="stack"><span>Python</span><span>FastAPI</span><span>pytest</span><span>flake8</span><span>Docker</span><span>GitHub Actions</span><span>GHCR</span><span>Kubernetes</span><span>Rolling updates</span><span>Health probes</span><span>Auto-rollback</span></div></div>
+    <div class="glass card"><h3>ci.yml (excerpt)</h3>
+<pre class="code">on: { push: { branches: [main] } }
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt
+      - run: flake8 .
+      - run: pytest -q
+      - run: docker build -t ghcr.io/susmithak98/hello-devops:${{ github.sha }} .
+      - run: docker push ghcr.io/susmithak98/hello-devops:${{ github.sha }}
+      - run: kubectl set image deploy/hello-devops app=...:${{ github.sha }}
+      - run: kubectl rollout status deploy/hello-devops</pre></div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const STAGES = [
+  ["checkout", "📥", "Checkout", "actions/checkout"],
+  ["lint", "🧹", "Lint", "flake8"],
+  ["test", "🧪", "Test", "pytest"],
+  ["build", "🐳", "Build", "docker build"],
+  ["push", "📦", "Push", "ghcr.io"],
+  ["deploy", "☸️", "Deploy", "kubectl rollout"],
+  ["health", "💓", "Health check", "/health"],
+];
+$("stages").innerHTML = STAGES.map(([id, ic, name, sub]) => `<div class="stage" data-s="${id}"><div class="ic">${ic}</div><b>${name}</b><small>${sub}</small><span class="st">pending</span></div>`).join("");
+const term = $("term"); const log = (h) => { term.insertAdjacentHTML("beforeend", h + "\n"); term.scrollTop = term.scrollHeight; };
+const stage = (id) => document.querySelector(`.stage[data-s="${id}"]`);
+const set = (id, cls, txt) => { const el = stage(id); el.classList.remove("run", "ok", "fail", "skip"); if (cls) el.classList.add(cls); el.querySelector(".st").textContent = txt; };
+const sha = () => Math.random().toString(16).slice(2, 9);
+let version = 0, live = null; const history = [];
+
+function renderPods(tag, phase) {
+  const pods = [1, 2, 3].map((i) => {
+    const cls = phase === "rolling" && i <= 2 ? "new" : (phase === "up" || phase === "rolling") ? "up" : "";
+    return `<span class="pod ${cls}">hello-devops-${tag || "none"}-${i} ${cls === "new" ? "starting" : cls ? "Running" : "—"}</span>`;
+  }).join("");
+  $("pods").innerHTML = pods;
+}
+function renderApp() {
+  if (!live) return;
+  $("app").innerHTML = `<div style="color:var(--green)">GET / → 200</div><div style="margin-top:8px;font-size:18px">{"message": "Hello World", "version": "v${live.v}"}</div>
+    <div style="margin-top:12px;color:var(--muted)">GET /add?a=5&amp;b=5 → {"result": 10}</div><div style="color:var(--muted)">GET /health → {"status": "ok"}</div>`;
+}
+function renderHist() { $("hist").innerHTML = history.slice(-5).reverse().map((h) => `<li><span class="${h.ok ? "g" : "r"}">${h.ok ? "✔" : "✖"}</span> ${h.sha} · ${h.msg}</li>`).join("") || "<li>—</li>"; }
+
+async function step(id, lines, fail = false) {
+  set(id, "run", "running…"); log(`<span class="h">▶ ${STAGES.find((s) => s[0] === id)[2]}</span>`);
+  for (const l of lines) { await sleep(260 + Math.random() * 220); log(l); }
+  if (fail) { set(id, "fail", "✖ failed"); return false; }
+  set(id, "ok", "✔ passed"); return true;
+}
+
+$("run").addEventListener("click", async () => {
+  const btn = $("run"); btn.disabled = true; btn.textContent = "Running…"; term.innerHTML = "";
+  STAGES.forEach(([id]) => set(id, "", "pending"));
+  const commit = sha(); const breakTest = $("break").checked, badDeploy = $("badDeploy").checked;
+  $("meta").textContent = `main · commit ${commit}`;
+  log(`<span class="c"># push to main by Susmithak98 · ${commit}</span>`);
+  const finish = (ok, msg) => { history.push({ ok, sha: commit, msg }); renderHist(); btn.disabled = false; btn.textContent = "▶ Run pipeline"; };
+  const skipRest = (from) => { let s = false; STAGES.forEach(([id]) => { if (id === from) s = true; else if (s) set(id, "skip", "skipped"); }); };
+
+  await step("checkout", [`Fetching ${commit}…`, `<span class="g">✔ Checked out repository</span>`]);
+  await step("lint", ["$ pip install -r requirements.txt", "$ flake8 .", `<span class="g">0 issues found</span>`]);
+  const testLines = ["$ pytest -q", "tests/test_app.py::test_root <span class='g'>PASSED</span>", "tests/test_app.py::test_health <span class='g'>PASSED</span>"];
+  if (breakTest) {
+    testLines.push("tests/test_app.py::test_add <span class='r'>FAILED</span>", "<span class='r'>E   assert add(5, 5) == 10</span>", "<span class='r'>E   +  where 9 = add(5, 5)</span>", "<span class='r'>1 failed, 2 passed in 0.41s</span>");
+    await step("test", testLines, true); skipRest("test");
+    log(`<span class="r">✖ Pipeline failed at Test. Nothing was deployed; production is still on ${live ? "v" + live.v : "the previous release"}.</span>`);
+    return finish(false, "tests failed · blocked");
+  }
+  testLines.push("tests/test_app.py::test_add <span class='g'>PASSED</span>", "<span class='g'>3 passed in 0.38s</span>");
+  await step("test", testLines);
+  const tag = commit.slice(0, 7);
+  await step("build", [`$ docker build -t ghcr.io/susmithak98/hello-devops:${tag} .`, "Step 1/6 : FROM python:3.12-slim", "Step 4/6 : RUN pip install --no-cache-dir -r requirements.txt", "Step 6/6 : CMD [\"uvicorn\", \"app:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]", `<span class="g">Successfully tagged hello-devops:${tag} (148 MB)</span>`]);
+  await step("push", [`$ docker push ghcr.io/susmithak98/hello-devops:${tag}`, `<span class="g">${tag}: digest sha256:${sha()}${sha()} size: 2203</span>`]);
+  renderPods(tag, "rolling");
+  await step("deploy", [`$ kubectl set image deploy/hello-devops app=ghcr.io/susmithak98/hello-devops:${tag}`, "Waiting for rollout: 1 of 3 updated replicas are available…", "Waiting for rollout: 2 of 3 updated replicas are available…", `<span class="g">deployment "hello-devops" successfully rolled out</span>`]);
+  if (badDeploy) {
+    await step("health", ["$ curl -f https://hello-devops.example/health", "<span class='r'>curl: (22) The requested URL returned error: 503</span>"], true);
+    log(`<span class="y">↩ $ kubectl rollout undo deploy/hello-devops</span>`); await sleep(600);
+    log(`<span class="y">Rolled back to ${live ? "v" + live.v : "previous ReplicaSet"}. Users saw no downtime.</span>`);
+    renderPods(live ? live.tag : "", live ? "up" : "");
+    return finish(false, "health check failed · rolled back");
+  }
+  await step("health", ["$ curl -f https://hello-devops.example/health", `<span class="g">{"status":"ok"} 200</span>`]);
+  version++; live = { v: version, tag }; renderPods(tag, "up"); renderApp();
+  log(`<span class="g">✅ v${version} is live in production (${tag}).</span>`);
+  finish(true, `v${version} deployed`);
+});
+renderPods("", "");
+</script>
+</body>
+</html>
