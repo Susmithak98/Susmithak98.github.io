@@ -79,6 +79,44 @@
   .scroll-hint { position: absolute; bottom: 36px; left: 6vw; font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
   .scroll-hint::before { content: ""; width: 40px; height: 1px; background: var(--muted); }
 
+  /* Hero video (template step 1): plays behind the hero once hero.mp4 is added */
+  .hero { position: relative; }
+  /* Her photo: first page only */
+  .hero-photo { position: absolute; right: calc(2vw - max(0px, (100vw - 1240px) / 2)); bottom: 0; height: min(80vh, 740px); z-index: 1; pointer-events: none; }
+  .hero-photo::before { content: ""; position: absolute; inset: 14% 6% 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(124,92,255,.38), rgba(34,211,238,.14) 60%, transparent); filter: blur(30px); z-index: -1; }
+  .hero-photo img { height: 100%; width: auto; display: block; filter: drop-shadow(0 20px 40px rgba(0,0,0,.45)); animation: photoIn 1.1s ease-out both; }
+  @keyframes photoIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  .hero-inner { position: relative; z-index: 2; }
+  @media (max-width: 1000px) { .hero-photo { position: relative; right: auto; height: auto; margin: 30px auto 0; width: min(78vw, 380px); } .hero-photo img { width: 100%; height: auto; } .scroll-hint { display: none; } }
+  .hero-video { position: absolute; inset: 0 -6vw; width: calc(100% + 12vw); height: 100%; object-fit: cover; z-index: -1; opacity: .6; display: none; }
+  .has-video .hero-video { display: block; }
+  .hero-shade { position: absolute; inset: 0 -6vw; z-index: -1; display: none;
+    background: linear-gradient(90deg, rgba(5,6,15,.95) 0%, rgba(5,6,15,.75) 40%, rgba(5,6,15,.2) 75%), linear-gradient(to top, var(--bg) 0%, transparent 30%); }
+  .has-video .hero-shade { display: block; }
+  /* Hero stats row */
+  .hero-stats { display: flex; flex-wrap: wrap; margin-top: 30px; border-top: 1px solid var(--border); max-width: 640px; }
+  .hero-stats div { padding: 16px 26px 0 0; margin-right: 26px; border-right: 1px solid var(--border); }
+  .hero-stats div:last-child { border-right: 0; margin-right: 0; }
+  .hero-stats b { display: block; font-size: 26px; font-weight: 700; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.1; }
+  .hero-stats span { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  @media (max-width: 640px) { .hero-stats { display: grid; grid-template-columns: 1fr 1fr; } .hero-stats div { border-right: 0; margin-right: 0; padding-right: 10px; } .hero-stats b { font-size: 22px; } }
+  /* About portrait */
+  .about-side { display: flex; flex-direction: column; gap: 18px; }
+  .portrait { position: relative; padding: 3px; border-radius: 26px; background: var(--grad); box-shadow: 0 30px 70px -25px rgba(124,92,255,.55); max-width: 420px; }
+  .portrait img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 25%; border-radius: 23px; }
+  .portrait .tagchip { position: absolute; left: -14px; bottom: 26px; font-family: var(--mono); font-size: 12px; padding: 8px 12px; border-radius: 10px; background: rgba(10,12,29,.9); border: 1px solid var(--border); }
+  .portrait .tagchip b { color: #34d399; font-weight: 400; }
+  /* Project cover graphics */
+  .cover { margin: -30px -30px 22px; border-radius: 20px 20px 0 0; overflow: hidden; aspect-ratio: 16 / 8; position: relative; }
+  .cover svg { width: 100%; height: 100%; display: block; transition: transform 1s ease; }
+  .card:hover .cover svg { transform: scale(1.05); }
+  .card .cover + .badge { margin-top: 0; }
+  /* Experience tags */
+  .job .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .job .tags span { font-family: var(--mono); font-size: 11.5px; color: #b9bfe6; padding: 3px 9px; border-radius: 6px; background: rgba(255,255,255,.05); border: 1px solid var(--border); }
+  .closing-line { margin-top: 26px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .closing-line b { color: #34d399; font-weight: 400; }
+
   /* Glass panel */
   .glass { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 
@@ -166,8 +204,9 @@
   .cut { position: relative; height: 100%; animation: float 6s ease-in-out infinite; }
   @keyframes float { 50% { transform: translateY(-8px); } }
   .cut img { position: relative; height: 100%; width: 100%; object-fit: contain; object-position: bottom;
-    filter: drop-shadow(0 0 1.5px rgba(34,211,238,.9)) drop-shadow(0 0 22px rgba(124,92,255,.55)); transition: filter .4s; }
-  .holo-scan { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; overflow: hidden;
+    filter: drop-shadow(0 18px 40px rgba(0,0,0,.45)) drop-shadow(0 0 26px rgba(124,92,255,.35)); transition: filter .4s; }
+  .holo-scan { display: none; }
+  .holo-scan-off { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; overflow: hidden;
     -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: bottom; mask-position: bottom;
     background: repeating-linear-gradient(0deg, rgba(34,211,238,.09) 0 2px, transparent 2px 5px); }
   .holo-scan::after { content: ""; position: absolute; left: 0; right: 0; height: 18%; top: -20%;
@@ -177,7 +216,7 @@
     border: 1.5px solid rgba(34,211,238,.7); box-shadow: 0 0 30px rgba(34,211,238,.5), inset 0 0 30px rgba(34,211,238,.35);
     animation: pad 3s ease-in-out infinite; }
   @keyframes pad { 50% { transform: scale(1.06); opacity: .6; } }
-  .talking .cut img { filter: drop-shadow(0 0 2px rgba(34,211,238,1)) drop-shadow(0 0 34px rgba(124,92,255,.85)); }
+  .talking .cut img { filter: drop-shadow(0 18px 40px rgba(0,0,0,.45)) drop-shadow(0 0 36px rgba(34,211,238,.55)); }
   .talking::before { opacity: 1.4; }
   .waving .cut { animation: hop .8s ease-in-out 2; }
   @keyframes hop { 0%,100% { transform: translateY(0) rotate(0); } 30% { transform: translateY(-12px) rotate(-1.5deg); } 70% { transform: translateY(-4px) rotate(1.5deg); } }
@@ -214,7 +253,6 @@
   .bubble-actions button.primary:hover { color: #07081a; filter: brightness(1.1); }
   .bubble-close { position: absolute; top: 8px; right: 8px; padding: 0 7px; line-height: 20px; border-radius: 6px; }
 
-  @media (min-width: 1000px) { main, footer { margin-right: min(46vh, 430px); } }
   @media (max-width: 999px) {
     .buddy { height: 230px; }
     .eq, .nameplate { display: none; }
@@ -241,13 +279,18 @@
 
 <main id="top">
   <section class="hero" id="home">
+    <!-- Higgsfield hero video: save it next to index.html as hero.mp4 and it plays here automatically -->
+    <video class="hero-video" id="hero-video" autoplay muted loop playsinline preload="auto"><source src="hero.mp4" type="video/mp4" /></video>
+    <div class="hero-shade"></div>
     <div class="hero-inner">
       <div class="status"><i></i><span id="status"></span></div>
       <h1>Hi, I'm <span class="grad" id="name"></span></h1>
       <div class="typed"><span>&gt; </span><b id="typed"></b><span class="caret"></span></div>
       <p class="tagline" id="tagline"></p>
+      <div class="hero-stats" id="hero-stats"></div>
       <div class="cta" id="hero-cta"></div>
     </div>
+    <div class="hero-photo" aria-hidden="false"><img src="photo-real.png" alt="Susmitha Kotharu" /></div>
     <div class="scroll-hint">scroll to explore</div>
   </section>
 
@@ -256,7 +299,9 @@
     <h2 class="reveal">Turning models into<br/>products people use.</h2>
     <div class="about-grid">
       <div class="about-text reveal" id="about-text"></div>
-      <div class="stats" id="stats"></div>
+      <div class="about-side">
+        <div class="stats" id="stats"></div>
+      </div>
     </div>
   </section>
 
@@ -291,31 +336,11 @@
       <p id="contact-text"></p>
       <div class="cta" id="contact-cta"></div>
       <div class="socials" id="socials"></div>
+      <p class="closing-line"><b>●</b> Open to Senior / Staff AI Engineering roles · Remote or hybrid · United States</p>
     </div>
   </section>
 </main>
 
-<div class="buddy" id="buddy">
-  <div class="bubble hidden" id="bubble" role="status" aria-live="polite">
-    <button class="bubble-close" id="bubble-close" aria-label="Hide speech bubble">×</button>
-    <div class="who" id="bubble-who"></div>
-    <div class="bubble-text" id="bubble-text"></div>
-    <div class="bubble-actions">
-      <button id="tour-btn" class="primary">▶ Give me the tour</button>
-      <button id="voice-btn" aria-pressed="true">🔊 Voice: ON</button>
-      <button id="next-btn">Next ›</button>
-    </div>
-  </div>
-  <button class="avatar-btn" id="avatar-btn" aria-label="Talk to Susmitha">
-    <div class="pad"></div>
-    <div class="cut">
-      <img id="avatar-photo" alt="Anime-style portrait of Susmitha Kotharu" />
-      <div class="holo-scan" id="holo-scan"></div>
-    </div>
-    <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    <div class="nameplate" id="nameplate"></div>
-  </button>
-</div>
 
 <footer id="footer"></footer>
 
@@ -340,6 +365,12 @@ const PROFILE = {
     "I'm a <strong>Senior AI Engineer</strong> with 11+ years of experience, from data engineering and applied ML to today's <strong>Generative and Agentic AI</strong>. I build LLM systems that hold up in regulated environments like healthcare, pharmacy benefits, government, and financial services.",
     "At Vatica Health I architected a <strong>GPT-4o pharmacy benefit assistant</strong> that 500+ pharmacists use every day. It cut lookup time by 60%, and its <strong>LangGraph, CrewAI, and MCP</strong> agents resolve 70% of multi-step requests without escalation.",
     "I care about quality you can measure. I build <strong>hybrid-search RAG</strong> with reranking, add <strong>Ragas, TruLens, and LangSmith</strong> evaluation gates to every build, and run services at 99.9% uptime with full observability and zero critical findings in HIPAA reviews.",
+  ],
+
+  heroStats: [
+    { value: "11+", label: "Years building" },
+    { value: "United States", label: "Based in" },
+    { value: "Agentic AI · RAG", label: "Focus" },
   ],
 
   stats: [
@@ -441,6 +472,7 @@ const PROFILE = {
     {
       role: "Senior AI Engineer",
       company: "Vatica Health",
+      tags: ["GPT-4o", "LangGraph", "CrewAI", "MCP", "Azure AI Search", "AKS", "HIPAA"],
       period: "Aug 2024 — Present",
       points: [
         "Architected a GPT-4o pharmacy benefit assistant that cut lookup time by 60% for 500+ pharmacists.",
@@ -452,6 +484,7 @@ const PROFILE = {
     {
       role: "AI Engineer",
       company: "State of Minnesota",
+      tags: ["LangChain", "LlamaIndex", "RAG", "AWS", "EKS", "MLflow"],
       period: "Aug 2022 — Aug 2024",
       points: [
         "Built secure RAG over 100K+ documents, cutting caseworker research time by 45%.",
@@ -462,6 +495,7 @@ const PROFILE = {
     {
       role: "Applied ML Engineer",
       company: "FIS Global",
+      tags: ["XGBoost", "scikit-learn", "FastAPI", "Azure ML", "MLflow"],
       period: "May 2020 — Aug 2022",
       points: [
         "Lifted credit-risk model ROC-AUC by 8% with XGBoost and feature engineering.",
@@ -472,6 +506,7 @@ const PROFILE = {
     {
       role: "ML Engineer",
       company: "Aveva",
+      tags: ["Python", "PySpark", "AWS ECS", "Airflow", "Terraform"],
       period: "Feb 2019 — May 2020",
       points: [
         "Built reproducible ML pipelines and MLflow tracking for 100+ experiments.",
@@ -481,6 +516,7 @@ const PROFILE = {
     {
       role: "Data Engineer",
       company: "Apollo Health",
+      tags: ["SQL", "Oracle PL/SQL", "ETL", "Data Quality", "GxP"],
       period: "Jun 2015 — Aug 2018",
       points: [
         "Built ETL pipelines across SAP ERP, MES, and LIMS that cut regulatory reporting effort by 50%.",
@@ -491,8 +527,8 @@ const PROFILE = {
 
   avatar: {
     name: "Susmitha",
-    photo: "avatar.png",                    // transparent cutout, upload next to index.html
-    voiceOnByDefault: true,                 // starts talking on the visitor's first click
+    photo: "photo-real.png",                // your original photo (transparent cutout), next to index.html
+    voiceOnByDefault: false,                // voice removed; the guide is text only
     nameplate: "Susmitha · Sr. AI Engineer",
     // What the avatar says when each section scrolls into view. "Next" cycles through the lines.
     // What she says in each section. The tour reads every line in order, scrolling as she goes.
@@ -552,6 +588,44 @@ if (PROFILE.resume) heroBtns.push(`<a class="btn btn-ghost" href="${esc(PROFILE.
 if (PROFILE.github) heroBtns.push(`<a class="btn btn-ghost" href="${esc(PROFILE.github)}"${ext(PROFILE.github)}>GitHub</a>`);
 $("hero-cta").innerHTML = heroBtns.join("");
 
+$("hero-stats").innerHTML = (PROFILE.heroStats || []).map((s) => `<div><b>${esc(s.value)}</b><span>${esc(s.label)}</span></div>`).join("");
+
+// Designed cover graphics for project cards (swap for real screenshots later)
+function cover(art, seed) {
+  const C1 = "#22d3ee", C2 = "#a78bfa", C3 = "#f472b6", W = "#e8ebff", D = "#1a1d3d";
+  let r = seed * 9301 + 49297; const rnd = () => ((r = (r * 9301 + 49297) % 233280) / 233280);
+  let g = "";
+  if (art === "chat") {
+    g += `<rect x="90" y="70" width="330" height="80" rx="24" fill="${D}" stroke="${C2}" stroke-opacity=".6"/><rect x="118" y="100" width="230" height="9" rx="4.5" fill="${W}" fill-opacity=".55"/><rect x="118" y="120" width="160" height="9" rx="4.5" fill="${W}" fill-opacity=".3"/>`;
+    g += `<rect x="300" y="180" width="330" height="80" rx="24" fill="url(#g${seed})"/><rect x="328" y="210" width="250" height="9" rx="4.5" fill="#0a0c1d" fill-opacity=".7"/><rect x="328" y="230" width="170" height="9" rx="4.5" fill="#0a0c1d" fill-opacity=".5"/>`;
+    g += `<rect x="90" y="290" width="220" height="44" rx="16" fill="${D}" stroke="${C1}" stroke-opacity=".5"/><text x="112" y="318" font-family="JetBrains Mono, monospace" font-size="15" fill="${C1}">[1] formulary §4.2</text>`;
+  } else if (art === "nodes") {
+    const n = Array.from({ length: 12 }, () => [70 + rnd() * 580, 50 + rnd() * 280]);
+    n.forEach((a, i) => n.forEach((b, j) => { if (j > i && Math.hypot(a[0] - b[0], a[1] - b[1]) < 210) g += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${C2}" stroke-opacity=".35"/>`; }));
+    n.forEach((a, i) => g += `<circle cx="${a[0]}" cy="${a[1]}" r="${i % 4 ? 7 : 14}" fill="${[C1, C2, C3][i % 3]}"/><circle cx="${a[0]}" cy="${a[1]}" r="${i % 4 ? 16 : 30}" fill="${[C1, C2, C3][i % 3]}" opacity=".15"/>`);
+  } else if (art === "layers") {
+    for (let i = 0; i < 5; i++) g += `<rect x="${150 + i * 26}" y="${60 + i * 46}" width="400" height="96" rx="18" fill="${i === 4 ? `url(#g${seed})` : D}" stroke="${C2}" stroke-opacity="${.25 + i * .12}"/>`;
+    g += `<text x="600" y="345" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="30" fill="${W}" text-anchor="end">92% grounded</text>`;
+  } else if (art === "pipeline") {
+    ["lint", "test", "build", "push", "deploy"].forEach((l, i) => { const x = 50 + i * 128; g += `<rect x="${x}" y="160" width="104" height="64" rx="14" fill="${i === 4 ? `url(#g${seed})` : D}" stroke="${C1}" stroke-opacity=".5"/><text x="${x + 52}" y="198" font-family="JetBrains Mono, monospace" font-size="15" fill="${i === 4 ? "#0a0c1d" : W}" text-anchor="middle">${l}</text>`; if (i < 4) g += `<path d="M${x + 106} 192 h20" stroke="${C2}" stroke-width="2.5"/>`; });
+    g += `<text x="50" y="120" font-family="Space Grotesk, sans-serif" font-size="30" font-weight="700" fill="${C1}">✓ all checks passed</text>`;
+  } else if (art === "waves") {
+    for (let i = 0; i < 12; i++) g += `<circle cx="470" cy="190" r="${24 + i * 22}" fill="none" stroke="${[C1, C2, C3][i % 3]}" stroke-opacity="${1 - i / 13}" stroke-width="${i % 3 ? 1.2 : 2.2}"/>`;
+    g += `<circle cx="470" cy="190" r="26" fill="url(#g${seed})"/><path d="M80 260 ${Array.from({ length: 16 }, (_, i) => `L${100 + i * 16} ${260 - Math.abs(Math.sin(i * .9)) * (30 + rnd() * 60)}`).join(" ")}" stroke="${W}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  } else if (art === "route") {
+    const pts = [[90, 300], [230, 140], [380, 240], [530, 90], [630, 270]];
+    g += `<path d="M${pts.map((p) => p.join(" ")).join(" L")}" fill="none" stroke="${C2}" stroke-width="2" stroke-dasharray="8 10"/>`;
+    pts.forEach((p, i) => g += `<circle cx="${p[0]}" cy="${p[1]}" r="${i === 0 || i === 4 ? 18 : 11}" fill="${i === 0 || i === 4 ? C3 : C1}"/>`);
+    g += `<text x="530" y="66" font-family="JetBrains Mono, monospace" font-size="18" fill="${C1}" text-anchor="middle">✈ LAX</text><text x="90" y="345" font-family="JetBrains Mono, monospace" font-size="18" fill="${W}" text-anchor="middle">NYC</text>`;
+  } else { // flow (data pipelines)
+    for (let i = 0; i < 4; i++) g += `<path d="M40 ${90 + i * 60} C 260 ${90 + i * 60}, 380 190, 640 190" fill="none" stroke="${[C1, C2, C3, C1][i]}" stroke-width="3" stroke-opacity=".7"/>`;
+    g += `<circle cx="640" cy="190" r="30" fill="url(#g${seed})"/><text x="40" y="355" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="28" fill="${W}">2M+ records / day</text>`;
+  }
+  return `<div class="cover"><svg viewBox="0 0 720 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="g${seed}" x1="0" x2="1"><stop offset="0" stop-color="${C1}"/><stop offset=".55" stop-color="${C2}"/><stop offset="1" stop-color="${C3}"/></linearGradient><radialGradient id="bg${seed}" cx=".7" cy=".3" r=".9"><stop offset="0" stop-color="#1c1f4a"/><stop offset="1" stop-color="#0a0c1d"/></radialGradient></defs><rect width="720" height="380" fill="url(#bg${seed})"/>${g}</svg></div>`;
+}
+const PROJECT_ART = ["chat", "nodes", "layers", "pipeline", "layers", "flow"];
+const LAB_ART = ["route", "waves", "pipeline"];
+
 $("about-text").innerHTML = PROFILE.about.map((p) => `<p>${p}</p>`).join(""); // HTML allowed for <strong>
 $("stats").innerHTML = PROFILE.stats.map((s) => `<div class="glass stat reveal"><div class="v">${esc(s.value)}</div><div class="l">${esc(s.label)}</div></div>`).join("");
 
@@ -559,11 +633,12 @@ $("skills-grid").innerHTML = Object.entries(PROFILE.skills).map(([group, items])
   `<div class="glass skill-group reveal"><h3>${esc(group)}</h3><div class="chips">${items.map((i) => `<span class="chip">${esc(i)}</span>`).join("")}</div></div>`
 ).join("");
 
-$("projects-grid").innerHTML = PROFILE.projects.map((p) => {
+$("projects-grid").innerHTML = PROFILE.projects.map((p, i) => {
   const links = [];
   if (p.github) links.push(`<a href="${esc(p.github)}"${ext(p.github)}>Code ↗</a>`);
   if (p.demo) links.push(`<a href="${esc(p.demo)}"${ext(p.demo)}>Live demo ↗</a>`);
   return `<div class="card-wrap reveal"><article class="glass card">
+    ${cover(PROJECT_ART[i % PROJECT_ART.length], i + 1)}
     ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ""}
     <h3>${esc(p.title)}</h3>
     <p>${esc(p.description)}</p>
@@ -573,7 +648,8 @@ $("projects-grid").innerHTML = PROFILE.projects.map((p) => {
   </article></div>`;
 }).join("");
 
-$("labs-grid").innerHTML = (PROFILE.labs || []).map((p) => `<div class="card-wrap reveal"><article class="glass card">
+$("labs-grid").innerHTML = (PROFILE.labs || []).map((p, i) => `<div class="card-wrap reveal"><article class="glass card">
+    ${cover(LAB_ART[i % LAB_ART.length], i + 20)}
     <span class="badge">${esc(p.badge)}</span>
     <h3>${esc(p.title)}</h3>
     <p>${esc(p.description)}</p>
@@ -583,7 +659,8 @@ $("labs-grid").innerHTML = (PROFILE.labs || []).map((p) => `<div class="card-wra
 
 $("timeline").innerHTML = PROFILE.experience.map((j) =>
   `<div class="glass job reveal"><div class="job-head"><h3>${esc(j.role)} <span>@ ${esc(j.company)}</span></h3><span class="period">${esc(j.period)}</span></div>
-   <ul>${j.points.map((pt) => `<li>${esc(pt)}</li>`).join("")}</ul></div>`
+   <ul>${j.points.map((pt) => `<li>${esc(pt)}</li>`).join("")}</ul>
+   ${j.tags ? `<div class="tags">${j.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div>` : ""}</div>`
 ).join("");
 
 $("contact-text").textContent = PROFILE.contactText;
@@ -591,6 +668,15 @@ $("contact-cta").innerHTML = PROFILE.email ? `<a class="btn btn-primary" href="m
 $("socials").innerHTML = [["GitHub", PROFILE.github], ["LinkedIn", PROFILE.linkedin], ["X / Twitter", PROFILE.twitter], ["Email", PROFILE.email && "mailto:" + PROFILE.email]]
   .filter(([, h]) => h).map(([l, h]) => `<a href="${esc(h)}"${ext(h)}>${l}</a>`).join("");
 $("footer").textContent = `© ${new Date().getFullYear()} ${PROFILE.name} · Built with Three.js · Hosted on GitHub Pages`;
+
+// Hero video: shown only when hero.mp4 exists and plays
+(function heroVideo() {
+  const v = $("hero-video"); if (!v) return;
+  const ok = () => document.querySelector(".hero").classList.add("has-video");
+  v.addEventListener("playing", ok, { once: true });
+  v.addEventListener("loadeddata", ok, { once: true });
+  v.querySelector("source").addEventListener("error", () => v.remove());
+})();
 
 // ---------- Interactions ----------
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -633,8 +719,8 @@ if (!reduceMotion && matchMedia("(hover: hover)").matches) {
 
 // ---------- Talking anime avatar ----------
 (function avatar() {
-  const A = PROFILE.avatar; if (!A) return;
-  const btn = $("avatar-btn"), bubble = $("bubble"), textEl = $("bubble-text"), voiceBtn = $("voice-btn"), tourBtn = $("tour-btn");
+  const A = PROFILE.avatar; if (!A || !$("buddy")) return; // avatar removed
+  const btn = $("avatar-btn"), bubble = $("bubble"), textEl = $("bubble-text"), tourBtn = $("tour-btn");
   const order = Object.keys(A.lines);
   $("bubble-who").textContent = A.name;
   $("nameplate").innerHTML = `<b>●</b> ${esc(A.nameplate || A.name)}`;
@@ -644,11 +730,11 @@ if (!reduceMotion && matchMedia("(hover: hover)").matches) {
   scan.style.webkitMaskImage = scan.style.maskImage = `url("${A.photo}")`;
   photo.onerror = () => { $("buddy").style.display = "none"; };
 
-  const synth = "speechSynthesis" in window ? window.speechSynthesis : null;
+  const synth = null; // voice removed: text only
   let voiceOn = !!(synth && A.voiceOnByDefault), unlocked = false, voice = null;
   let section = "home", idx = 0, said = new Set(), touring = false, run = 0, hideTimer = null, waveTimer = null, current = "";
-  const setVoiceBtn = () => { voiceBtn.textContent = voiceOn ? "🔊 Voice: ON" : "🔈 Voice: OFF"; voiceBtn.classList.toggle("on", voiceOn); voiceBtn.setAttribute("aria-pressed", voiceOn); };
-  if (!synth) voiceBtn.style.display = "none"; setVoiceBtn();
+  
+  
 
   const pickVoice = () => {
     if (!synth) return;
@@ -731,10 +817,6 @@ if (!reduceMotion && matchMedia("(hover: hover)").matches) {
   btn.addEventListener("click", () => { unlocked = true; wave(); if (touring) return; bubble.classList.contains("hidden") ? say(lineFor(section, idx)) : next(); });
   $("next-btn").addEventListener("click", () => { unlocked = true; next(); });
   $("bubble-close").addEventListener("click", () => { endTour(); stop(); bubble.classList.add("hidden"); });
-  voiceBtn.addEventListener("click", () => {
-    unlocked = true; voiceOn = !voiceOn; setVoiceBtn();
-    if (voiceOn) say(current || lineFor(section, idx)); else if (synth) synth.cancel();
-  });
 
   // Browsers only allow speech after the visitor interacts. On the first click or key press, say the current line out loud.
   const unlock = (e) => {
